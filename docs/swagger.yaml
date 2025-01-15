@@ -1,0 +1,112 @@
+definitions:
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  main.Building:
+    properties:
+      city:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      floors:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      updatedAt:
+        type: string
+      year:
+        type: integer
+    type: object
+  main.CreateBuildingDto:
+    properties:
+      city:
+        type: string
+      floors:
+        type: integer
+      name:
+        type: string
+      year:
+        type: integer
+    type: object
+  main.GetBuildingDto:
+    properties:
+      city:
+        type: string
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      floors:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+      year:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /building:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve buildings filtered by city, year, and floors
+      parameters:
+      - description: City name
+        in: query
+        name: city
+        type: string
+      - description: Year of construction
+        in: query
+        name: year
+        type: integer
+      - description: Number of floors
+        in: query
+        name: floors
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.Building'
+            type: array
+      summary: Get buildings by params
+      tags:
+      - building
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Building object
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/main.CreateBuildingDto'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/main.GetBuildingDto'
+      summary: Create building
+      tags:
+      - building
+swagger: "2.0"
